@@ -1,9 +1,12 @@
-﻿namespace TicTacToe
+﻿
+
+namespace TicTacToe
 {
     public class Player
     {
         public string Name;
         public string Marker;
+
         public Player(string name, string marker)
         {
             Name = name;
@@ -14,9 +17,10 @@
     internal class Program
     {
         public static string[][] Board;
+
         static void Main(string[] args)
         {
-            Console.WriteLine("Hi. Lets play TicTacToe!!");
+            Console.WriteLine("Hi. Let's play TicTacToe!!");
             Console.Write("Player1's name: ");
             string player1name = Console.ReadLine();
             Player player1 = new Player(player1name, "X");
@@ -33,11 +37,12 @@
                new string[] {"7", "8", "9"}
             };
 
-            Console.WriteLine("Heres the board");
+            Console.WriteLine("Here's the board");
             DisplayBoard();
 
             Player currentPlayer = player1;
             string winner = null;
+
             while (winner == null)
             {
                 Console.WriteLine("It's {0}'s turn!", currentPlayer.Name);
@@ -46,7 +51,7 @@
                 DisplayBoard();
                 string selectedSlot = Console.ReadLine();
 
-                //Check if slot has already been selected
+                // Check if slot has already been selected
                 bool isValid = SelectionIsValid(selectedSlot);
                 if (isValid)
                 {
@@ -54,6 +59,9 @@
                     int row = indexes[0];
                     int column = indexes[1];
                     Board[row][column] = currentPlayer.Marker;
+
+                    // Check for a winner
+                    winner = CheckForWinner();
                 }
                 else
                 {
@@ -69,6 +77,26 @@
                     currentPlayer = player1;
                 }
             }
+
+            if (winner != null)
+            {
+                if (winner == player1.Marker)
+                {
+                    Console.WriteLine("Congratulations, {0}! You are the winner!", player1.Name);
+
+                }
+                else if(winner == player2.Marker)
+                {
+                    Console.WriteLine("Congratulations, {0}! You are the winner!", player2.Name);
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("It's a draw. The game ended in a tie.");
+            }
+
+            Console.ReadLine();
         }
 
         static void DisplayBoard()
@@ -77,6 +105,7 @@
             Console.WriteLine("|{0}||{1}||{2}|", Board[1][0], Board[1][1], Board[1][2]);
             Console.WriteLine("|{0}||{1}||{2}|", Board[2][0], Board[2][1], Board[2][2]);
         }
+
         static int[] SelectionToIndexes(string selectedSlot)
         {
             int[] indexes = new int[2];
@@ -121,6 +150,7 @@
             }
             return indexes;
         }
+
         static bool SelectionIsValid(string selectedSlot)
         {
             bool isValid = true;
@@ -137,6 +167,36 @@
                 Console.WriteLine("Selection is invalid");
             }
             return isValid;
+        }
+
+        static string CheckForWinner()
+        {
+            // Check rows
+            for (int row = 0; row < 3; row++)
+            {
+                if (Board[row][0] == Board[row][1] && Board[row][1] == Board[row][2])
+                {
+                    return Board[row][0];
+                }
+            }
+
+            // Check columns
+            for (int col = 0; col < 3; col++)
+            {
+                if (Board[0][col] == Board[1][col] && Board[1][col] == Board[2][col])
+                {
+                    return Board[0][col];
+                }
+            }
+
+            // Check diagonals
+            if ((Board[0][0] == Board[1][1] && Board[1][1] == Board[2][2]) ||
+                (Board[0][2] == Board[1][1] && Board[1][1] == Board[2][0]))
+            {
+                return Board[1][1];
+            }
+
+            return null; // No winner
         }
     }
 }
