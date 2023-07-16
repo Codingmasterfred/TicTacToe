@@ -187,7 +187,7 @@ namespace TicTacToe
                 {
                     return Board[0][col];
                 }
-            }
+            } 
 
             // Check diagonals
             if ((Board[0][0] == Board[1][1] && Board[1][1] == Board[2][2]) ||
