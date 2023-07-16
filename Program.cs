@@ -194,9 +194,9 @@ namespace TicTacToe
                 (Board[0][2] == Board[1][1] && Board[1][1] == Board[2][0]))
             {
                 return Board[1][1];
-            }
+            } 
              
             return null; // No winner
-        }
+        } 
     }
-}
+} 
