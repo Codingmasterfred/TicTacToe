@@ -1,5 +1,7 @@
 ﻿
 
+using System;
+
 namespace TicTacToe
 {
     public class Player
@@ -14,9 +16,10 @@ namespace TicTacToe
         }
     }
 
-    internal class Program
+    public class Program
     {
         public static string[][] Board;
+        public static Player currentPlayer;
 
         static void Main(string[] args)
         {
@@ -40,7 +43,7 @@ namespace TicTacToe
             Console.WriteLine("Here's the board");
             DisplayBoard();
 
-            Player currentPlayer = player1;
+            currentPlayer = player1;
             string winner = null;
 
             while (winner == null)
@@ -68,14 +71,7 @@ namespace TicTacToe
                     continue;
                 }
 
-                if (currentPlayer == player1)
-                {
-                    currentPlayer = player2;
-                }
-                else if (currentPlayer == player2)
-                {
-                    currentPlayer = player1;
-                }
+                SwitchPlayers(player1, player2);
             }
 
             if (winner != null)
@@ -83,13 +79,11 @@ namespace TicTacToe
                 if (winner == player1.Marker)
                 {
                     Console.WriteLine("Congratulations, {0}! You are the winner!", player1.Name);
-
                 }
-                else if(winner == player2.Marker)
+                else if (winner == player2.Marker)
                 {
                     Console.WriteLine("Congratulations, {0}! You are the winner!", player2.Name);
                 }
-
             }
             else
             {
@@ -106,7 +100,7 @@ namespace TicTacToe
             Console.WriteLine("|{0}||{1}||{2}|", Board[2][0], Board[2][1], Board[2][2]);
         }
 
-        static int[] SelectionToIndexes(string selectedSlot)
+        public static int[] SelectionToIndexes(string selectedSlot)
         {
             int[] indexes = new int[2];
             switch (selectedSlot)
@@ -169,7 +163,7 @@ namespace TicTacToe
             return isValid;
         }
 
-        static string CheckForWinner()
+        public static string CheckForWinner()
         {
             // Check rows
             for (int row = 0; row < 3; row++)
@@ -187,16 +181,28 @@ namespace TicTacToe
                 {
                     return Board[0][col];
                 }
-            } 
+            }
 
             // Check diagonals
             if ((Board[0][0] == Board[1][1] && Board[1][1] == Board[2][2]) ||
                 (Board[0][2] == Board[1][1] && Board[1][1] == Board[2][0]))
             {
                 return Board[1][1];
-            } 
-             
+            }
+
             return null; // No winner
-        } 
+        }
+
+        public static void SwitchPlayers(Player player1, Player player2)
+        {
+            if (currentPlayer == player1)
+            {
+                currentPlayer = player2;
+            }
+            else
+            {
+                currentPlayer = player1;
+            }
+        }
     }
-} 
+}
